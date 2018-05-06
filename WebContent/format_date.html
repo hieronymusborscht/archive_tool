@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript">
+ 
+
+var patt = /[0123456789]{1,2}[\-]{1}(Jan|Feb|Mar|March|Apr|April|May|Jun|June|Jul|July|Aug|Sep|Sept|Oct|Nov|Dec){1,}[\-]{1}[0123456789]{4}/
+
+console.log("A "+patt.test("01-Jan-2015"));
+console.log("A "+patt.test("1-Jan-2015"));
+console.log("A "+patt.test("01-Feb-2015"));
+console.log("A "+patt.test("01-May-2015"));
+
+console.log("A "+patt.test("01-Jan-2015"));
+console.log("A "+patt.test("01-Jan-2015"));
+console.log("A "+patt.test("01-March-1891"));
+console.log("A "+patt.test("01-Mar-1892"));
+
+console.log("B "+patt.test("01-jan-1893"));
+
+console.log("B "+patt.test("21-Dece-1893"));
+console.log("B "+patt.test("1-jan-1893"));
+console.log("B "+patt.test("01-Fed-1893"));
+
+
+</script>
+</head>
+<body>
+
+</body>
+</html>

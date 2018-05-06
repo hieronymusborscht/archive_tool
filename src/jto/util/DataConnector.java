@@ -77,7 +77,70 @@ public class DataConnector {
 		 
 		 return did_succeed;
 	 }
+	 
+	 public static boolean checkIfArticleAlreadySaved(String article_url) {
+		 boolean already_exist = false;
+
+		 StringBuilder sb = new StringBuilder();
+		 sb.append("select a_id from article where url in (?)");
+		 try {
+			connection = getConnection();
+			PreparedStatement stmt = connection.prepareStatement(sb.toString());
+			stmt.setString(1, article_url);
+			ResultSet  rs = stmt.executeQuery();
+		
+			while(rs.next()) {
+				already_exist=true;
+				rs.getInt("a_id");
+			}
+				connection.close();
+				connection=null;
+			} catch(Exception e) { 			
+				e.printStackTrace();
+			}
+			
+		 
+		 return already_exist;
+	 }
 	
+	 
+	 public static boolean saveArticle(String uri, String author, java.sql.Date d, String file_name) {
+		 boolean b = false;
+		 try {
+			 /*
+			  * create table article (	a_id serial primary key,
+	URL varchar(256) not null default '',
+	saved_file_name varchar(256) not null default '',
+	date_written date not null default '1970-01-20',
+	date_saved date not null default '1970-01-20',
+	author_1 varchar(256) not null default '',
+	author_2 varchar(256) not null default '',
+	author_3 varchar(256) not null default '',
+	case_name varchar(256) not null default '',
+	is_printed boolean not null default false,
+	case_id integer not null default '0')
+			  */
+			StringBuffer sb = new StringBuffer();
+			sb.append("insert into article (URL,saved_file_name,author_1,date_written, date_saved) values (?,?,?,?, current_date)");
+			connection = getConnection();
+			PreparedStatement stmt = connection.prepareStatement(sb.toString());
+			stmt.setString(1, uri);
+			stmt.setString(2, file_name);
+			stmt.setString(3, author);
+			stmt.setDate(4, d);
+			stmt.execute();
+			b = (stmt.getUpdateCount()>0);
+			
+				connection.close();
+				connection=null;
+			} catch(Exception e) { 			
+				b=false;
+				e.printStackTrace();
+				
+			}
+		 
+		 return b;
+	 }
 	
 	
 	/*

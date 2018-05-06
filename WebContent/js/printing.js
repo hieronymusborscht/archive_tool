@@ -16,24 +16,41 @@
     function   ge(param){
     	return document.getElementById(param);
     }
+    function checkDateFormat(date_candidate){
+    	var patt = /[0123456789]{1,2}[\-]{1}(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec|JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEP|OCT|NOV|DEC|jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec){1,}[\-]{1}[0123456789]{4}/
+    	return patt.test(date_candidate);
+    }
+    
+    
     
     function checkDate(){
-     	var in_date = ge("date").value;
-    	var err_msg_el = ge("err_msg");
-    	if(in_date==null || in_date.length<1){
+    	if(checkInputURI()){
+    		var in_date = ge("date").value;
+    		var err_msg_el = ge("err_msg");
     		if (err_msg_el.hasChildNodes()) {
-    	    	err_msg_el.removeChild(err_msg_el.childNodes[0]);
-    	    }
-    		err_msg_el.appendChild(ct("please add the date"));
-    		return false;
+				err_msg_el.removeChild(err_msg_el.childNodes[0]);
+			}
+    		if(in_date==null || in_date.length<1){
+    		
+    			err_msg_el.appendChild(ct("please add the date"));
+    			err_msg_el.setAttribute("class","err_alert");
+    			return false;
+    		}else{
+    			if(!checkDateFormat(in_date)){
+    				err_msg_el.appendChild(ct("use date format 01-Jan-1999"));
+        			err_msg_el.setAttribute("class","err_alert");
+    			}else{
+    				return true;
+    			}
+    		}
     	}else{
-    		return true;
+    		return false;
     	}
 
     }
     
     function checkSavedFile(){
-    	console.log("checksavedfile");
+    	//console.log("checksavedfile");
     	if(checkAuth() && checkDate() && checkInputURI()){
     		var file_name = ge("saved_file").value;
     		if(file_name!=null && file_name.length>0){
@@ -59,6 +76,19 @@
         xhttp.send();
     }
     */
+    
+   function sendTest(){
+    	var uri = ge("input_uri").value;
+      	if(uri!=null && uri.length>0){
+      		var url = "http://localhost:8080/archive_tool/Remote?uri_t="+uri;
+        	$.get(encodeURI(url), function(data) {
+   
+        	 //console.log("["+data+"]");
+        	 updateSkip(data);
+        	});
+      	}
+   } 
+    
    function sendToServer(){
 	   
 	   
@@ -84,6 +114,25 @@
    		ge("date").value="";
    		ge("author").value="";
    	 ge("saved_file").value="";
+   }
+   
+   function updateSkip(param){
+	   var err_msg_el = ge("err_msg");   	
+	   if (err_msg_el.hasChildNodes()) {
+   	    	err_msg_el.removeChild(err_msg_el.childNodes[0]);
+   	   }
+	   if(param.localeCompare("OK")==0){
+		   err_msg_el.appendChild(ct("SKIP"));
+		   err_msg_el.setAttribute("style","color:orange; font-size:18pt");
+		   ge("input_uri").value="";
+		   ge("input_uri").focus();
+		   //resetForm();
+		   //var a_el = ce("a");
+		   //a_el.setAttribute("href","#");
+		   //a_el.addEventListener("click", function() {
+		   //     resetForm();
+		   //});
+	   }
    }
    function updateState(param){
 	   var err_msg_el = ge("err_msg");   	
@@ -158,6 +207,7 @@
     	    		err_msg_el.removeChild(err_msg_el.childNodes[0]);
     	    }
     		err_msg_el.appendChild(ct("please add the author"));
+    		err_msg_el.setAttribute("class","err_alert");
     		return false;
     	}else{
     		return true;
@@ -168,17 +218,22 @@
     }
     function ShowWindow() { 
     	var in_uri = ge("input_uri").value;
-    	var win;
+    	sendTest();
     	loadPreviewFrame(in_uri);
     }
     
     function loadPreviewFrame(in_uri){
-    	var prev_fr = ge("preview_frame");
-    	var prev_frame_height= getWindowHeight()-190;
-    	var prev_frame_width= getWindowWidth();
-    	prev_fr.setAttribute("height",prev_frame_height);
-    	prev_fr.setAttribute("width",prev_frame_width);
-    	prev_fr.setAttribute("src",in_uri);
+    	var do_frame = ge("dont_iframe").checked;
+    	//console.log("is checked ["+do_frame+"]");
+    	if(!do_frame){
+    	//var prev_fr = ge("preview_frame");
+    	//var prev_frame_height= getWindowHeight()-190;
+    	//var prev_frame_width= getWindowWidth();
+    	//prev_fr.setAttribute("height",prev_frame_height);
+    	//prev_fr.setAttribute("width",prev_frame_width);
+    	//prev_fr.setAttribute("src",in_uri);
+    	
+    	}
     }
     function getWindowWidth(){
     	var w = window,

@@ -9,3 +9,6 @@ create table article (	a_id serial primary key,
 	case_name varchar(256) not null default '',
 	is_printed boolean not null default false,
 	case_id integer not null default '0')
+
+
+ALTER TABLE article ADD CONSTRAINT unique_url UNIQUE (URL)

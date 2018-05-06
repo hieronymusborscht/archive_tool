@@ -8,6 +8,7 @@
 
 <style>
 #err_msg { width: 200px;}
+.err_alert {color: #000; font-size:12pt; }
 </style>
 
 </head>
@@ -19,13 +20,16 @@
 			<td colspan="3">
 				<input type="text" id="input_uri" size="90" onblur="ShowWindow()" />
 			</td>
+			<td>
+			<input type="checkbox" id="dont_iframe" >
+			</td>
 		</tr>
 		<tr>
 			<td>
 				<label for="date">Date</label>
 			</td>
 			<td>
-				<input type="text" id="date" size="40"  onblur="checkDate()"/>
+				<input type="text" id="date" size="40" placeholder="10-Jan-1999" onblur="checkDate()"/>
 			</td>
 			<td rowspan="2" style="border-style:solid; border-width:1px;">
 				<span id="err_msg">&nbsp;</span>
