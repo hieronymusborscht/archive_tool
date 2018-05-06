@@ -39,14 +39,12 @@ public class DataConnector {
 		}
 		try {	
 			connection = DriverManager.getConnection(
-			//"jdbc:postgresql://aa1w2fh7xu35vbl.cngclcqagnfu.us-west-2.rds.amazonaws.com:5432/ebdb?user=rgrsiteuser&password=shadrach99");
-			
+		
 					"jdbc:postgresql://127.0.0.1:5432/lh_article", 
 					"postgres",
 					"Saturn5");
 			
-			//acurecord.cowdurfgakww.us-west-2.rds.amazonaws.com:5432/iatl?user=acusiteuser&password=shadrach99
-			//messages.append("connection succeeded <br />");
+		
 		} catch (SQLException e) {
 			System.out.println("Connection Failed! Check output console<br />");
 			e.printStackTrace();
