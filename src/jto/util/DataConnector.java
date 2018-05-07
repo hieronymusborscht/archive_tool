@@ -98,14 +98,17 @@ public class DataConnector {
 			} catch(Exception e) { 			
 				e.printStackTrace();
 			}
-			
+			System.out.println("does article exist");
+			System.out.println(article_url);
+			System.out.println(already_exist);
 		 
 		 return already_exist;
 	 }
 	
 	 
-	 public static boolean saveArticle(String uri, String author, java.sql.Date d, String file_name) {
-		 boolean b = false;
+	 public static int saveArticle(String uri, String author, java.sql.Date d, String file_name) {
+		 //boolean b = false;
+		 int g =0;
 		 try {
 			 /*
 			  * create table article (	a_id serial primary key,
@@ -129,17 +132,26 @@ public class DataConnector {
 			stmt.setString(3, author);
 			stmt.setDate(4, d);
 			stmt.execute();
-			b = (stmt.getUpdateCount()>0);
+			//b = (stmt.getUpdateCount()>0);
 			
+			stmt = null;
+			stmt = connection.prepareStatement("select max(a_id) id from article  where url in (?)");
+			stmt.setString(1, uri);
+			ResultSet rs = stmt.executeQuery();
+			while(rs.next()){
+				
+					g=	rs.getInt("id");
+					System.out.println(g);
+			}
 				connection.close();
 				connection=null;
 			} catch(Exception e) { 			
-				b=false;
+				//b=false;
 				e.printStackTrace();
 				
 			}
 		 
-		 return b;
+		 return g;
 	 }
 	
 	

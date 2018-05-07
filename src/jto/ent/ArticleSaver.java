@@ -21,13 +21,15 @@ public class ArticleSaver {
 		return does_exist_already;
 	}
 	
-	public boolean saveArticle(String uri, String author, String date, String file_name) {
-		boolean did_it_save = false;
+	public int saveArticle(String uri, String author, String date, String file_name) {
+		//boolean did_it_save = false;
+		int a_id = 0;
 		java.sql.Date s_d =  setDate(date);
 		if(s_d!=null && uri!=null && author!=null && file_name!=null) {
-			did_it_save = jto.util.DataConnector.saveArticle(uri, author, s_d, file_name);
+			a_id = jto.util.DataConnector.saveArticle(uri, author, s_d, file_name);
 		}
-		return did_it_save;
+		System.out.println("ArticleSaver.savearticle "+a_id);
+		return a_id;
 	}
 	private java.sql.Date setDate(String s) {
 		Date d = null;

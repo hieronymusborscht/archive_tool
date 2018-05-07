@@ -82,9 +82,8 @@
       	if(uri!=null && uri.length>0){
       		var url = "http://localhost:8080/archive_tool/Remote?uri_t="+uri;
         	$.get(encodeURI(url), function(data) {
-   
-        	 //console.log("["+data+"]");
-        	 updateSkip(data);
+        	
+        	 updateSkip(data, uri);
         	});
       	}
    } 
@@ -116,22 +115,22 @@
    	 ge("saved_file").value="";
    }
    
-   function updateSkip(param){
+   function updateSkip(param, uri){
+	   console.log("["+param+"]");
 	   var err_msg_el = ge("err_msg");   	
 	   if (err_msg_el.hasChildNodes()) {
    	    	err_msg_el.removeChild(err_msg_el.childNodes[0]);
    	   }
-	   if(param.localeCompare("OK")==0){
+	   if(param.localeCompare("NO")!=0){
 		   err_msg_el.appendChild(ct("SKIP"));
 		   err_msg_el.setAttribute("style","color:orange; font-size:18pt");
 		   ge("input_uri").value="";
 		   ge("input_uri").focus();
-		   //resetForm();
-		   //var a_el = ce("a");
-		   //a_el.setAttribute("href","#");
-		   //a_el.addEventListener("click", function() {
-		   //     resetForm();
-		   //});
+		 
+	   }
+	   if(param.localeCompare("NO")==0){
+		   var win = window.open(uri, '_preview');
+	    	// win.focus();
 	   }
    }
    function updateState(param){
@@ -139,9 +138,11 @@
 	   if (err_msg_el.hasChildNodes()) {
    	    	err_msg_el.removeChild(err_msg_el.childNodes[0]);
    	   }
-	   if(param.localeCompare("OK")==0){
+	   if(param.localeCompare("NO")!=0){
 		   err_msg_el.appendChild(ct("OK"));
-		   err_msg_el.setAttribute("style","color:green; font-size:18pt");
+		   err_msg_el.appendChild(ce("br"));
+		   err_msg_el.appendChild(ct(param));
+		   err_msg_el.setAttribute("style","color:green; font-size:12pt");
 		   var a_el = ce("a");
 		   a_el.setAttribute("href","#");
 		   a_el.addEventListener("click", function() {
@@ -219,22 +220,9 @@
     function ShowWindow() { 
     	var in_uri = ge("input_uri").value;
     	sendTest();
-    	loadPreviewFrame(in_uri);
     }
     
-    function loadPreviewFrame(in_uri){
-    	var do_frame = ge("dont_iframe").checked;
-    	//console.log("is checked ["+do_frame+"]");
-    	if(!do_frame){
-    	//var prev_fr = ge("preview_frame");
-    	//var prev_frame_height= getWindowHeight()-190;
-    	//var prev_frame_width= getWindowWidth();
-    	//prev_fr.setAttribute("height",prev_frame_height);
-    	//prev_fr.setAttribute("width",prev_frame_width);
-    	//prev_fr.setAttribute("src",in_uri);
-    	
-    	}
-    }
+
     function getWindowWidth(){
     	var w = window,
         d = document,

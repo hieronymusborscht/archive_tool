@@ -27,6 +27,7 @@ public class Remote extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		boolean is_okay = false;
+		 int last_index = 0;
 		String uri= null;
 		String d = null;
 		String a = null;
@@ -57,14 +58,17 @@ public class Remote extends HttpServlet {
 				sf =request.getParameter("sf");
 			}
 			if(uri!=null && uri.length()>0 && d!=null && d.length()>0 && a!=null && a.length()>0 && sf!=null && sf.length()>0) {
-				is_okay=article_saver.saveArticle(uri, a, d, sf);
+				last_index=article_saver.saveArticle(uri, a, d, sf);
+				if(last_index>0) {
+					is_okay =true;
+				}
 			}
 		}
 	
        request.getSession().setAttribute("article_saver", article_saver);	
 		
 		if(is_okay) {
-			response.getWriter().append("OK");
+			response.getWriter().append(""+last_index);
 		}else {
 			response.getWriter().append("NO");
 		}
