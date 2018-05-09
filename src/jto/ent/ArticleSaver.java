@@ -6,7 +6,7 @@ import java.text.SimpleDateFormat;
 
 public class ArticleSaver {
 	
-	private java.util.TreeMap<Integer, Article> article_list;
+	private java.util.LinkedHashMap<Integer, Article> article_list;
 	private java.util.TreeMap<String, String> string_variables;
 	private java.util.TreeMap<String, java.sql.Date> date_variables;
 	
@@ -14,6 +14,11 @@ public class ArticleSaver {
 		string_variables = new java.util.TreeMap<String, String> ();
 		//date_variables = new java.util.TreeMap<String, java.sql.Date>();
 	}
+	
+	public boolean articlesLoaded() {
+		return (article_list!=null && article_list.size()>0);
+	}
+	
 	
 	public boolean checkIfSavedAlready(String uri_t) {
 		boolean does_exist_already = false;
@@ -47,5 +52,26 @@ public class ArticleSaver {
 			string_variables.put(key, value);
 		}
 	}
+	
+	public void loadAllArticles() {
+		article_list = jto.util.DataConnector.loadAllArticles();
+	}
+	public String makeSpreadSheet() {
+		StringBuffer sb = new StringBuffer();
+		java.util.Set<Integer> article_keys = article_list.keySet();
+		java.util.Iterator<Integer> keys_it = article_keys.iterator();
+		Article a = null;  int counter_l = 0;
+		while(keys_it.hasNext()) {
+			
+			a =article_list.get(keys_it.next());
+			if(counter_l==0) {
+				sb.append(a.getCSVHeader());
+			}
+			sb.append(a.getCSVRow());
+			counter_l = counter_l+1;
+		}
+		return sb.toString();
+	}
+	
 	
 }

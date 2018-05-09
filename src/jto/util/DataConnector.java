@@ -12,6 +12,8 @@ import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.sql.SQLException;
 
+import jto.ent.Article;
+
 public class DataConnector {
 
 
@@ -77,6 +79,34 @@ public class DataConnector {
 		 
 		 return did_succeed;
 	 }
+	 
+	 public static java.util.LinkedHashMap<Integer, Article> loadAllArticles(){
+		 java.util.LinkedHashMap<Integer, Article> articles = new java.util.LinkedHashMap<Integer, Article> ();
+		 StringBuilder sb = new StringBuilder();
+		 sb.append("select a_id, url, saved_file_name, date_written, author_1 from article order by date_written ");
+		 try {
+			connection = getConnection();
+			PreparedStatement stmt = connection.prepareStatement(sb.toString());
+			
+			ResultSet  rs = stmt.executeQuery();
+			Article a = null;
+			while(rs.next()) {
+				a = new Article();
+				a.setIntValue("a_id", rs.getInt("a_id"));
+				a.setStringValue("url", rs.getString("url"));
+				a.setStringValue("saved_file_name",rs.getString("saved_file_name"));
+				a.setDateValue("date_written",rs.getDate("date_written"));
+				a.setStringValue("author_1",rs.getString("author_1"));
+				articles.put(a.getIntValue("a_id"),a);
+			}
+				connection.close();
+				connection=null;
+			} catch(Exception e) { 			
+				e.printStackTrace();
+			}
+		 return articles;
+	 }
+	 
 	 
 	 public static boolean checkIfArticleAlreadySaved(String article_url) {
 		 boolean already_exist = false;
