@@ -172,14 +172,14 @@
         	}
 
         	if(win!=null){
-        		win.onbeforeprint = function() {
+        		//win.onbeforeprint = function() {
         			//console.log('BEFORE the user prints.');
-        			alert("before");
-        		};
-        		win.onafterprint = function() {
+        		//	alert("before");
+        		//};
+        		//win.onafterprint = function() {
         			//console.log('AFTER the user prints');   
-        			alert("after");
-        		};
+        		//	alert("after");
+        	//	};
         		var timer = setInterval(function() { 
         			if(win.closed) {
         				clearInterval(timer);
