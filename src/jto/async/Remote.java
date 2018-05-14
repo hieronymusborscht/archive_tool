@@ -47,6 +47,7 @@ public class Remote extends HttpServlet {
 		}else {
 			if( (request.getParameter("uri")!=null) && (request.getParameter("uri").length()>0 )){
 				 uri =request.getParameter("uri");
+				 
 			}
 			if( (request.getParameter("d")!=null) && (request.getParameter("d").length()>0 )){
 				d = request.getParameter("d");
@@ -59,7 +60,7 @@ public class Remote extends HttpServlet {
 			}
 			if(uri!=null && uri.length()>0 && d!=null && d.length()>0 && a!=null && a.length()>0 && sf!=null && sf.length()>0) {
 				last_index=article_saver.saveArticle(uri, a, d, sf);
-				System.out.println(last_index);
+				//System.out.println(last_index);
 				if(last_index>0) {
 					is_okay =true;
 				}

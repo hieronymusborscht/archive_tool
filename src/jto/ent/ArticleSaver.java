@@ -22,16 +22,15 @@ public class ArticleSaver {
 	
 	public boolean checkIfSavedAlready(String uri_t) {
 		boolean does_exist_already = false;
-		does_exist_already = jto.util.DataConnector.checkIfArticleAlreadySaved(uri_t);
+		does_exist_already = jto.util.DataConnector.checkIfArticleAlreadySaved(removeTrailingSlash(uri_t));
 		return does_exist_already;
 	}
 	
 	public int saveArticle(String uri, String author, String date, String file_name) {
-		//boolean did_it_save = false;
 		int a_id = 0;
 		java.sql.Date s_d =  setDate(date);
 		if(s_d!=null && uri!=null && author!=null && file_name!=null) {
-			a_id = jto.util.DataConnector.saveArticle(uri, author, s_d, file_name);
+			a_id = jto.util.DataConnector.saveArticle(removeTrailingSlash(uri), author, s_d, file_name);
 		}
 		System.out.println("ArticleSaver.savearticle "+a_id);
 		return a_id;
@@ -52,6 +51,20 @@ public class ArticleSaver {
 			string_variables.put(key, value);
 		}
 	}
+	
+	public static String removeTrailingSlash(String url) {
+		int length_l = url.length();
+		//System.out.println(length_l);
+		
+		--length_l;
+		char buff = url.charAt(length_l);
+		if(buff == '/')
+		{	url = url.substring(0, length_l);
+			//System.out.println("ends with a trailing slash" );
+		}
+		return url;
+	}
+	
 	
 	public void loadAllArticles() {
 		article_list = jto.util.DataConnector.loadAllArticles();

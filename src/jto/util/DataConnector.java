@@ -112,7 +112,7 @@ public class DataConnector {
 		 boolean already_exist = false;
 
 		 StringBuilder sb = new StringBuilder();
-		 sb.append("select a_id from article where url in (?)");
+		 sb.append("select url, a_id from article where  trim(trailing '/' from url)  in (?)"); 
 		 try {
 			connection = getConnection();
 			PreparedStatement stmt = connection.prepareStatement(sb.toString());

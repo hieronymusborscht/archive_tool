@@ -1,4 +1,6 @@
-package jto.ent;
+package jto.run;
+
+import jto.ent.ArticleSaver;
 
 public class DoBackup {
 	
